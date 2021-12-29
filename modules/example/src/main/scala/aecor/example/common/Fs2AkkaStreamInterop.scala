@@ -13,7 +13,7 @@ object Fs2AkkaStreamInterop {
         materializer: Materializer
     )(implicit F: Async[F]): F[(Mat, Stream[F, A])] = F.delay {
       val (mat, publisher) = self.toMat(Sink.asPublisher(false))(Keep.both).run()(materializer)
-      (mat, publisher.toStream[F])
+      (mat, publisher.toStreamBuffered[F](1))
     }
     def toStream[F[_]](materializer: Materializer)(implicit F: Async[F]): Stream[F, A] =
       Stream.force(materializeToStream[F](materializer).map(_._2))
