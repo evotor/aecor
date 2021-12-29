@@ -10,8 +10,8 @@ lazy val akkaPersistenceCassandraVersion = "0.62"
 
 lazy val apacheKafkaClientsVersion = "2.3.0"
 
-lazy val catsVersion = "2.6.1"
-lazy val catsEffectVersion = "3.2.9"
+lazy val catsVersion = "2.7.0"
+lazy val catsEffectVersion = "3.3.1"
 
 lazy val logbackVersion = "1.2.3"
 lazy val cassandraDriverExtrasVersion = "3.8.0"
@@ -19,7 +19,7 @@ lazy val jsr305Version = "3.0.2"
 lazy val boopickleVersion = "1.3.1"
 lazy val monocleVersion = "2.1.0"
 
-lazy val fs2Version = "3.1.3"
+lazy val fs2Version = "3.2.4"
 lazy val scodecBitsVersion = "1.1.13"
 lazy val scodecCoreVersion = "1.11.4"
 
@@ -285,12 +285,13 @@ lazy val publishSettings = Seq(
     false
   },
   publishTo := {
-    val nexus = "https://oss.sonatype.org/"
+    val nexus = "http://nexus.market.local/repository/maven-"
     if (isSnapshot.value)
-      Some("snapshots" at nexus + "content/repositories/snapshots")
+      Some("snapshots".at(nexus + "snapshots/").withAllowInsecureProtocol(true))
     else
-      Some("releases" at nexus + "service/local/staging/deploy/maven2")
+      Some("releases".at(nexus + "releases/").withAllowInsecureProtocol(true))
   },
+  credentials += Credentials(Path.userHome / ".sbt" / ".credentials"),
   autoAPIMappings := true,
   scmInfo := Some(
     ScmInfo(url("https://github.com/notxcain/aecor"), "scm:git:git@github.com:notxcain/aecor.git")
